@@ -39,10 +39,10 @@ Información que se debe guardar de los pilotos.
 
 ### 📋 Tabla Pivote (pilot_spaceship)
 Para gestionar qué naves son pilotadas por qué pilotos, se necesita una tabla pivote con la siguiente información:
-* ID del piloto (`pilot_id`)
-* ID de la nave (`spaceship_id`)
-* Fecha de inicio de la asociación (`start_date`)
-* Fecha de fin de la asociación (`end_date`)
+* ID del piloto 
+* ID de la nave 
+* Fecha de inicio de la asociación 
+* Fecha de fin de la asociación 
 
 ---
 
