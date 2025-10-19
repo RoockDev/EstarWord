@@ -1,61 +1,71 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Gestión de Flota de Star Wars: Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+El objetivo es diseñar el backend para la gestión de la flota, pilotos y mantenimiento de naves del universo Star Wars, usando **Eloquent ORM** y las relaciones entre sus modelos.
 
-## About Laravel
+* **Fuente de Datos Principal:** [SWAPI - The Star Wars API](https://swapi.dev/api/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛰️ Modelos y Estructura de Datos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Planetas
+Un planeta tendrá asociado varias naves.
+* `nombre`
+* `período de rotación`
+* `población`
+* `clima`
 
-## Learning Laravel
+### Naves
+Las naves pertenecen a un planeta, pueden tener varios mantenimientos y varios pilotos asociados a lo largo del tiempo.
+* `nombre`
+* `modelo`
+* `tripulación`
+* `pasajeros`
+* `clase de nave`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Pilotos
+Información que se debe guardar de los pilotos.
+* `nombre`
+* `altura`
+* `año de nacimiento`
+* `género`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Mantenimientos
+* `id`
+* `idnave`
+* `fecha`
+* `descripción`
+* `coste`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📋 Tabla Pivote (pilot_spaceship)
+Para gestionar qué naves son pilotadas por qué pilotos, se necesita una tabla pivote con la siguiente información:
+* ID del piloto 
+* ID de la nave 
+* Fecha de inicio de la asociación 
+* Fecha de fin de la asociación 
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ✅ Requisitos Funcionales del Cliente
 
-### Premium Partners
+La API debe ofrecer la siguiente información y funcionalidades:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1.  **CRUD de naves.** Inicialmente con acceso abierto, pero con la posibilidad de protegerlo en el futuro.
 
-## Contributing
+2.  **Listado de toda la información almacenada.** Se necesitan tanto listados generales como búsquedas por `id` para cada modelo.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3.  **Asignar/Desasignar un piloto a una nave.** Debe incluir un control de errores.
 
-## Code of Conduct
+4.  **Listar todas las naves** que no tienen un piloto asignado actualmente.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5.  **Listar el histórico de todos los pilotos** que han sido asignados a naves (no tienen por qué estar asignados actualmente).
 
-## Security Vulnerabilities
+6.  Igual que el punto anterior, pero mostrando **únicamente los pilotos que están asociados a naves en el presente**, junto con la información de dichas naves.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7.  **Registrar un mantenimiento** para una nave.
 
-## License
+8.  **Listar mantenimientos puntuales** (búsqueda por ID).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9.  **Listar los mantenimientos de una nave** que se hayan realizado entre dos fechas.
+
+## Que la fuerza te acompañe
