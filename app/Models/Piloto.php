@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Piloto extends Model
 {
+
+    use HasFactory;
+
     //un piloto puede tener muchas naves y una nava muchos pilotos
     public function naves(){
         $this->belongsToMany(

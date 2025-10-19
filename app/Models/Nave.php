@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Nave extends Model
 {
+
+    use HasFactory;
+    
     //una nave pertenece a un solo planeta
     public function planeta(){
         return $this->belongsTo(Planeta::class);
