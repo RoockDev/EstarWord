@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/naves', [NaveController::class, 'index']);
 Route::get('/naves/{nave}', [NaveController::class, 'show']);
 Route::post('/naves',[NaveController::class, 'store']);
-Route::put('/naves', [NaveController::class],'update');
+Route::put('/naves/{nave}', [NaveController::class],'update');
 Route::delete('/naves/{nave}', [NaveController::class, 'destroy']);
 
