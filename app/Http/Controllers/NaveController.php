@@ -6,6 +6,8 @@ use App\Models\Nave;
 use App\Models\Piloto;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class NaveController extends Controller
 {
     /* GET /api/naves */
@@ -36,21 +38,68 @@ class NaveController extends Controller
     /* DELETE /api/naves/{nave} */
     public function destroy(Nave $nave){
         $nave->delete();
-        return response()->json(["Exito"=> "Nave eliminada correctamente"],204);
+        return response()->json(["Exito"=> "Nave eliminada correctamente"],200);
     }
 
     /**asignar piloto a nave */
-    public function asginarPiloto(Request $request, Nave $nave){
+
+    public function asignarPiloto(Request $request, Nave $nave){
         
         $piloto = Piloto::find($request->piloto_id);
         if (!$piloto) {
             return response()->json(["Error" => "Piloto no encontrado"],404);
         }
 
-        $nave->pilotos()->attach($piloto->id);
-        return response()->json(["succes" => "Piloto asinado correctamente"]);
+        $yaEstaAsignado = $nave->pilotos()->where('piloto_id', $piloto->id)->exists();
+        if ($yaEstaAsignado) {
+            return response()->json(["Error" => "Ese piloto ya esta asignado a esa nave"], 409);
+        }
+
+        $nave->pilotos()->attach($piloto->id, ['fecha_asociacion' => now()]);
+        return response()->json(["succes" => "Piloto asinado correctamente"], 201);
 
     }
+
+    /**Desasignar piloto a nave */
+    public function desasignarPiloto(Request $request, Nave $nave){
+        $piloto = Piloto::find($request->piloto_id);
+        if (!$piloto) {
+            return response()->json(["Error" => "Piloto no encontrado"], 404);
+        }
+
+        $yaEstaAsginado = $nave->pilotos()->where('piloto_id',$piloto->id)->whereNull('fecha_fin_asociacion')->exists();
+        if (!$yaEstaAsginado) {
+            return response()->json(["Error" => "El piloto no está asignado a la nave"], 409);
+        } else {
+            /**
+             * Como lo que queremos es saber que fecha fin de asociacion hay entre el piloto
+             * y la nave de la tabla pivote, si hiciesemos un detach borrariamos y no tendria
+             * ningun sentido pero con la funcion de eloquent updateExistingPivot() , actualizamos
+             * una fila de una tabla intermediaria como puede ser nave_piloto
+             */
+            $nave->pilotos()->updateExistingPivot($piloto->id,['fecha_fin_asociacion' => now()]);
+            return response()->json(["succes" => "Piloto desasignado con exito"], 200);
+        }
+    }
+
+    /**Listar todas las naves que no tengan piloto */
+    /**Get /api/navesSinPiloto */
+    public function navesSinPiloto(){
+        /**Aqui necesitamos comprobar dos cosas, una las naves que no tienen relacion
+         * con la tabla pivote ya que no tienen pilotos y las naves que si tienen relacion
+         * con la tabla pivote pero tienen una fecha_fin_asociacion con el piloto
+         * y con el metodo whereDoesntHave de eloquent podemos conseguirlo
+         * hacer dos en uno
+         */
+
+        $naves = Nave::whereDoesntHave('pilotos', function($query){
+            $query->whereNull('fecha_fin_asociacion');
+        })->get();
+
+        return response()->json($naves);
+    }
+
+
         
     
 

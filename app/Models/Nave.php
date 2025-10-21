@@ -9,6 +9,8 @@ class Nave extends Model
 {
 
     use HasFactory;
+
+    protected $fillable = ['nombre','modelo','tripulacion','pasajeros','clase_nave','planeta_id'];
     
     //una nave pertenece a un solo planeta
     public function planeta(){

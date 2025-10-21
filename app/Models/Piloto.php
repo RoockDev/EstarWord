@@ -12,7 +12,7 @@ class Piloto extends Model
 
     //un piloto puede tener muchas naves y una nava muchos pilotos
     public function naves(){
-        $this->belongsToMany(
+        return $this->belongsToMany(
             Nave::class, //modelo
             'nave_piloto', //tabla pivote
             'piloto_id', //clave foranea local
