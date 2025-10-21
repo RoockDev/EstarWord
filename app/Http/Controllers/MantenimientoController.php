@@ -26,11 +26,10 @@ class MantenimientoController extends Controller
 
     /**Listar mantenimientos de naves entre dos fechas */
     /**Get /api/mantenimientos?inicio=yyyy-mm-dd & fin=yyyy-mm-dd */
-    public function mantenimientosEntreFechas(Request $request){
-        $inicio = $request ->query('inicio');
-        $fin = $request->query('fin');
+    public function mantenimientosEntreFechas($inicio = null, $fin = null){
+       
 
-        if (!$inicio || $fin) {
+        if (!$inicio || !$fin) {
             return response()->json([
                 "error" => "tienes que introducir fecha inicio y fecha fin"
             ],400);

@@ -31,4 +31,6 @@ Route::get('/pilotosAsignadosActualmente',[PilotoController::class, 'pilotosAsig
 /**Endpoints mantenimientos */
 Route::post('/naves/{nave}/mantenimientos ',[MantenimientoController::class, 'store']);
 Route::get('/mantenimientos/{mantenimiento}', [MantenimientoController::class, 'show']);
+Route::get('/mantenimientos/{inicio?}/{fin?}', [MantenimientoController::class, 'mantenimientosEntreFechas']);
+
 
