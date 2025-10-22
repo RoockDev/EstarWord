@@ -24,14 +24,21 @@ class PilotoController extends Controller
     /**Get /pilotosAsignadosActualmente */
     public function pilotosAsignadosActualmente(){
 
-        /**aqui baicamente traemos los pilotos que cumplen esa condicion
-         * y con wl with lo que hacemos es traer tambien la nave asociada
-         * a ese piloto
+        /**
+         * con esto traemos los pilotos que tienen al menos una nave con fecha_fin null
+         * pero con with naves traemos todas las naves del piloto aunque ya no esten asignadas
+         * por eso sale la fecha fin tambien por lo tanto el de abajo no
          */
-        $pilotos = Piloto::whereHas('naves', function ($query){
+        /*$pilotos = Piloto::whereHas('naves', function ($query){
             $query->whereNull('fecha_fin_asociacion');
-        })->with('naves') //Carga las naves de cada piloto
-            ->get(); 
+        })->with('naves')->get(); */
+         $pilotos = Piloto::whereHas('naves',function ($query) {
+            $query->whereNull('fecha_fin_asociacion');
+         })
+         ->with(['naves' => function ($query){
+            $query->whereNull('fecha_fin_asociacion');
+         }]);
+        
             
         return response()->json($pilotos);
     }

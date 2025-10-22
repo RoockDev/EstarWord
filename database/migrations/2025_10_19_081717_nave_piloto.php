@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('fecha_fin_asociacion')->nullable();
             $table->foreign('nave_id')->references('id')->on('naves')->onDelete('cascade');
             $table->foreign('piloto_id')->references('id')->on('pilotos')->onDelete('cascade');
-            $table->primary(['nave_id','piloto_id']);
+            $table->primary(['nave_id','piloto_id','fecha_asociacion']);
             $table->timestamps();
         });
     }
