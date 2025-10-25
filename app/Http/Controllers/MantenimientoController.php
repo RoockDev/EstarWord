@@ -5,12 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
 use App\Models\Nave;
+use Illuminate\Support\Facades\Validator;
 
 class MantenimientoController extends Controller
 {
     /**registrar un mantenimiento */
     /**Post /api/naves/{nave}/mantenimientos */
     public function store(Request $request, Nave $nave){
+
+        $reglas = [
+            'fecha' => 'required|date',
+            'descripcion' => 'required|string',
+            'coste' => 'required|numeric|min:0'
+        ];
+
+        $validator = Validator::make($request->all(),$reglas);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ],400);
+        }
+
+
         $mantenimiento = $nave->mantenimientos()->create($request->all());
         return response()->json([
             "Succes" => "Mantenimiento creado correctamente",
@@ -26,14 +44,23 @@ class MantenimientoController extends Controller
 
     /**Listar mantenimientos de naves entre dos fechas */
     /**Get /api/mantenimientos?inicio=yyyy-mm-dd & fin=yyyy-mm-dd */
-    public function mantenimientosEntreFechas($inicio = null, $fin = null){
+    public function mantenimientosEntreFechas($request){
        
 
-        if (!$inicio || !$fin) {
+        $validator = Validator::make($request->all(),[
+            'inicio' => 'required|date',
+            'fin' => 'require|date|after_or_equal:inicio'
+        ]);
+
+        if ($validator->fails()) {
             return response()->json([
-                "error" => "tienes que introducir fecha inicio y fecha fin"
+                'success' => false,
+                'errors' => $validator->errors()
             ],400);
         }
+
+        $inicio = $request->input('inicio');
+        $fin = $request->input('fin');
 
         $mantenimientos = Mantenimiento::whereBetween('fecha', [$inicio,$fin])->get();
 

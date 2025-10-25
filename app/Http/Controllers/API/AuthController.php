@@ -13,18 +13,33 @@ class AuthController extends Controller
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $auth = Auth::user();
-            // return $auth;
-            //$tokenResult = $auth->createToken('LaravelSanctumAuth');
-            $tokenResult = $auth->createToken('LaravelSanctumAuth', ['read', 'delete','mindundi']);
+            $abilities = [];
+            if ($auth->role == 'admin') {
+               // $abilities = ['*'];
+               $abilities = ['admin'];
+            }elseif ($auth->role == 'gestor') {
+                $abilities = [
+                    'nave:listar',
+                    'piloto:listar',
+                    'mantenimiento:listar',
+                    'mantanimiento:crear',
+                    'piloto:asignar',
+                    'piloto:desasignar'
+                ];
+            }elseif ($auth->role == 'usuario'){
+                $abilities = [
+                    'nave:listar',
+                    'piloto:listar',
+                    'mantenimiento:listar'
+                ];
+            }
 
-            // Actualizar expiración
-            // $hours = (int) env('SANCTUM_EXPIRATION_HOURS', 2);
-            // $tokenResult->accessToken->expires_at = now()->addHours($hours);
-            // $tokenResult->accessToken->save();
+            $tokenResult = $auth->createToken('LaravelSanctumAuth',$abilities);
 
             $success = [
                 'id'         => $auth->id,
                 'name'       => $auth->name,
+                'role'       => $auth->role,
                 'token'      => $tokenResult->plainTextToken,
                 'expires_at' => $tokenResult->accessToken->expires_at == null ? null :  $tokenResult->accessToken->expires_at->toDateTimeString()
             ];
@@ -44,6 +59,7 @@ class AuthController extends Controller
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['role'] = 'usuario';
         $user = User::create($input);
 
         $tokenResult = $user->createToken('LaravelSanctumAuth');
@@ -56,6 +72,7 @@ class AuthController extends Controller
         $success = [
             'id' => $user->id,
             'name' => $user->name,
+            'role' => $user->role,
             'token' => $tokenResult->plainTextToken,
             'expires_at' => $tokenResult->accessToken->expires_at ==null ? null:  $tokenResult->accessToken->expires_at->toDateTimeString()
         ];
