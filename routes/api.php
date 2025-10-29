@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/naves', [NaveController::class, 'store'])->middleware('midadmin');
     Route::put('/naves/{nave}', [NaveController::class, 'update'])->middleware('midadmin');
     Route::delete('/naves/{nave}', [NaveController::class, 'destroy'])->middleware('midadmin');
-    Route::put('users/{user}/role', [UserController::class, 'update_role'])->middleware('midadmin');
+    Route::put('users/{user}/role', [UserController::class, 'updateRole'])->middleware('midadmin');
 
 
     /**Accesible para el gestor */

@@ -22,7 +22,7 @@ class AuthController extends Controller
                     'nave:listar',
                     'piloto:listar',
                     'mantenimiento:listar',
-                    'mantanimiento:crear',
+                    'mantenimiento:crear',
                     'piloto:asignar',
                     'piloto:desasignar'
                 ];

@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             PilotoSeeder::class,
             NaveSeeder::class,
             MantenimientoSeeder::class,
-            NavePilotoSeeder::class
+            NavePilotoSeeder::class,
+            UserSeeder::class
         ]);
         
     }

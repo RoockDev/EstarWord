@@ -44,12 +44,12 @@ class MantenimientoController extends Controller
 
     /**Listar mantenimientos de naves entre dos fechas */
     /**Get /api/mantenimientos?inicio=yyyy-mm-dd & fin=yyyy-mm-dd */
-    public function mantenimientosEntreFechas($request){
+    public function mantenimientosEntreFechas(Request $request){
        
 
         $validator = Validator::make($request->all(),[
             'inicio' => 'required|date',
-            'fin' => 'require|date|after_or_equal:inicio'
+            'fin' => 'required|date|after_or_equal:inicio'
         ]);
 
         if ($validator->fails()) {
