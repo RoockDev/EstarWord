@@ -41,8 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     /**Accesible para el gestor */
     Route::post('/naves/asignarPiloto/{nave}', [NaveController::class, 'asignarPiloto'])->middleware('midpilotoasignar');
     Route::put('/naves/desasignarPiloto/{nave}', [NaveController::class, 'desasignarPiloto'])->middleware('midpilotodesasignar');
-    /**Ruta para subir una foto a cloudinary */
-    Route::post('/pilotos/{piloto}/foto',[PilotoController::class, 'subirFotoCloud'])->middleware('midpilotoasignar');
+    /**Ruta para subir una foto a cloudinary con postman y token */
+    //Route::post('/pilotos/{piloto}/foto',[PilotoController::class, 'subirFotoCloud'])->middleware('midpilotoasignar');
+    
     
     /**Endpoints pilotos */
     /**disponibles para todos */
@@ -53,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mantenimientos/{mantenimiento}', [MantenimientoController::class, 'show'])->middleware('midmantenimientolistar');
     Route::get('/mantenimientos/{inicio?}/{fin?}', [MantenimientoController::class, 'mantenimientosEntreFechas'])->middleware('midmantenimientolistar'); 
 });
+/**Ruta para subir una foto a cloudinary con cliente index */
+Route::post('/pilotos/{piloto}/foto',[PilotoController::class, 'subirFotoCloud']);
 
 
 Route::post('login', [AuthController::class, 'login']);
