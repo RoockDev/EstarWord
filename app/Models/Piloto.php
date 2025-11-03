@@ -10,6 +10,14 @@ class Piloto extends Model
 
     use HasFactory;
 
+    protected $fillable = [
+        'nombre',
+        'altura',
+        'ano_nacimiento',
+        'genero',
+        'foto_url',
+    ];
+
     //un piloto puede tener muchas naves y una nava muchos pilotos
     public function naves(){
         return $this->belongsToMany(

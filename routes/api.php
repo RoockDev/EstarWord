@@ -33,11 +33,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/naves/{nave}', [NaveController::class, 'update'])->middleware('midadmin');
     Route::delete('/naves/{nave}', [NaveController::class, 'destroy'])->middleware('midadmin');
     Route::put('users/{user}/role', [UserController::class, 'updateRole'])->middleware('midadmin');
+    //crear nuevo piloto con foto generica
+    Route::post('/pilotos', [PilotoController::class, 'store'])->middleware('midadmin');
+
 
 
     /**Accesible para el gestor */
     Route::post('/naves/asignarPiloto/{nave}', [NaveController::class, 'asignarPiloto'])->middleware('midpilotoasignar');
     Route::put('/naves/desasignarPiloto/{nave}', [NaveController::class, 'desasignarPiloto'])->middleware('midpilotodesasignar');
+    /**Ruta para subir una foto a cloudinary */
+    Route::post('/pilotos/{piloto}/foto',[PilotoController::class, 'subirFotoCloud'])->middleware('midpilotoasignar');
     
     /**Endpoints pilotos */
     /**disponibles para todos */
