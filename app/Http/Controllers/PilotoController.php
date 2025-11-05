@@ -75,10 +75,10 @@ class PilotoController extends Controller
         })
             ->with(['naves' => function ($query) {
                 $query->whereNull('fecha_fin_asociacion');
-            }]);
+            }])->get();
 
 
-        return response()->json($pilotos);
+        return response()->json($pilotos,200);
     }
 
     public function subirFotoCloud(request $request, Piloto $piloto)
@@ -134,5 +134,13 @@ class PilotoController extends Controller
 
         return response()->json(['error' => 'No se recibió ningún archivo válido'],400);
 
+    }
+
+    public function destroy(Piloto $piloto){
+        $piloto->delete();
+
+        return response()->json([
+            'message' => 'Piloto eliminado con exito'
+        ],200);
     }
 }

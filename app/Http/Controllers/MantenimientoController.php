@@ -69,4 +69,40 @@ class MantenimientoController extends Controller
         ],200);
     }
 
+    public function update(Request $request, $id){
+        $mantenimiento = Mantenimiento::find($id);
+
+        if (!$mantenimiento) {
+            return response()->json([
+                'message' => 'Mantenimiento no encontrado'
+            ]);
+        }
+
+        $rules = [
+            'fecha' => 'sometimes|date',
+            'descripcion' => 'sometimes|string',
+            'coste' => 'sometimes|numeric|min:0',
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ],400);
+        }
+
+        //actualizamos el mantenimiento solo con los datos validados
+        $mantenimiento->update($validator->validated());
+
+        
+
+        return response()->json([
+            'message' => 'Mantenimiento actualizado con exito'
+        ],200);
+
+
+
+    }
+
 }
